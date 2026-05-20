@@ -1,0 +1,11 @@
+X = [[1],[2],[3],[8],[9],[10]]; y = [0,0,0,1,1,1]
+predict = lambda v: 0 if v < 5 else 1
+print("SUPERVISED")
+print("2 ->", predict(2)); print("9 ->", predict(9))
+print("\nUNSUPERVISED")
+for v in X: print(v[0], "-> Cluster", "A" if v[0]<5 else "B")
+print("\nSEMI-SUPERVISED")
+for v in [2, 3, 8, 10]: print(v, "->", predict(v))
+print("\nREINFORCEMENT")
+score = sum(10 if a=="Correct" else -5 for a in ["Correct","Wrong","Correct"])
+print("Score =", score)
