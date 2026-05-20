@@ -1,0 +1,22 @@
+import pandas as pd, math
+data = {
+'StudyHours': ['High','High','Medium','Low','Low','Medium','High','Low','Medium','High'],
+'Attendance': ['Good','Poor','Good','Poor','Good','Good','Poor','Poor','Good','Good'],
+'Assignment': ['Yes','Yes','Yes','No','No','Yes','No','No','Yes','Yes'],
+'Result': ['Pass','Pass','Pass','Fail','Fail','Pass','Fail','Fail','Pass','Pass']
+}
+df = pd.DataFrame(data)
+def entropy(col):
+e = 0
+for v in col.unique():
+p = len(col[col==v]) / len(col); e -= p * math.log2(p)
+return e
+def gain(df, att, tgt):
+return entropy(df[tgt]) - sum(len(s)/len(df)*entropy(s[tgt]) for _,s in df.groupby(att))
+def id3(df, feats, tgt):
+if df[tgt].nunique() == 1: return df[tgt].iloc[0]
+if not feats: return df[tgt].mode()[0]
+best = max(feats, key=lambda f: gain(df, f, tgt))
+return {best: {v: id3(df[df[best]==v], [f for f in feats if f!=best], tgt)
+for v in df[best].unique()}}
+print(id3(df, list(df.columns[:-1]), 'Result'))
