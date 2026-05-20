@@ -1,0 +1,16 @@
+def inversions(s):
+p = [x for x in s if x != 0]
+return sum(p[i] > p[j] for i in range(len(p)) for j in range(i+1, len(p)))
+solvable = lambda s: inversions(s) % 2 == 0
+def show(s):
+for i in range(0, 9, 3):
+print(*[" " if x==0 else x for x in s[i:i+3]])
+s1 = list(map(int, input("State 1: ").split()))
+s2 = list(map(int, input("State 2: ").split()))
+print("\nState 1"); show(s1)
+print("State 2"); show(s2)
+print("State 1 Inversions:", inversions(s1))
+print("State 2 Inversions:", inversions(s2))
+print("\nState 1:", "Solvable" if solvable(s1) else "Unsolvable")
+print("State 2:", "Solvable" if solvable(s2) else "Unsolvable")
+print("\nBoth are in", "SAME set" if solvable(s1)==solvable(s2) else "DIFFERENT sets")
