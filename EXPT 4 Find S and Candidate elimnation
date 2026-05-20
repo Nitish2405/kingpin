@@ -1,0 +1,28 @@
+from functools import reduce
+data = [
+['Youth','High','No','Fair','No'], ['Youth','High','No','Excellent','No'],
+['Middle','High','No','Fair','Yes'], ['Senior','Medium','No','Fair','Yes'],
+['Senior','Low','Yes','Fair','Yes'], ['Senior','Low','Yes','Excellent','No'],
+['Middle','Low','Yes','Excellent','Yes'], ['Youth','Medium','No','Fair','No'],
+['Youth','Low','Yes','Fair','Yes'], ['Senior','Medium','Yes','Fair','Yes']
+]
+# FIND-S: reduce over all positive examples
+pos = [r[:-1] for r in data if r[-1]=='Yes']
+h = reduce(lambda h,x: ['?' if h[i]!='0' and h[i]!=x[i] else x[i] for i in range(len(h))],
+pos, ['0'] * (len(data[0])-1))
+# CANDIDATE ELIMINATION
+def ce(data):
+n = len(data[0])-1; S = ['0']*n; G = [['?']*n]
+for r in data:
+x, y = r[:-1], r[-1]
+if y == 'Yes':
+S = [x[i] if S[i]=='0' else ('?' if S[i]!=x[i] else S[i]) for i in range(n)]
+G = [g for g in G if all(g[i]=='?' or g[i]==x[i] for i in range(n))]
+else:
+G = [g[:i]+[S[i]]+g[i+1:] for g in G for i in range(n) if g[i]=='?' and S[i]!=x[i]]
+return S, G
+print("FIND-S ALGORITHM\nFinal Hypothesis:", h)
+S, G = ce(data)
+print("\nCANDIDATE ELIMINATION\nFinal Specific Hypothesis:", S)
+print("\nFinal General Hypothesis:")
+for g in G: print(g)
