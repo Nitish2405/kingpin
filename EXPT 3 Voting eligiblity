@@ -1,0 +1,8 @@
+people = {"Ravi": 22, "Anu": 17, "Kiran": 19, "Meena": 15}
+print("KNOWLEDGE BASE\n")
+for p, a in people.items(): print(p, "Age =", a)
+print("\nRESULT\n")
+for p, a in people.items():
+print(p, "CAN vote" if a >= 18 else "CANNOT vote")
+print("\nRULE")
+print("IF Age >= 18 THEN Eligible_to_Vote(Person)")
