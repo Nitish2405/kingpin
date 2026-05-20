@@ -1,0 +1,22 @@
+import math, random
+from collections import Counter
+def entropy(d):
+c = Counter(r[-1] for r in d)
+return -sum(v/len(d)*math.log2(v/len(d)) for v in c.values())
+def gain(d, f):
+vals = {}
+for r in d: vals.setdefault(r[f], []).append(r)
+return entropy(d) - sum(len(s)/len(d)*entropy(s) for s in vals.values())
+def id3(d, feats):
+labels = [r[-1] for r in d]
+if len(set(labels)) == 1: return labels[0]
+if not feats: return Counter(labels).most_common(1)[0][0]
+best = max(feats, key=lambda f: gain(d, f))
+return {best: {v: id3([r for r in d if r[best]==v], [f for f in feats if f!=best])
+for v in {r[best] for r in d}}}
+data = [['Sunny','Hot','No'],['Sunny','Cool','No'],['Rainy','Cool','Yes'],
+['Rainy','Hot','Yes'],['Cloudy','Hot','Yes'],['Cloudy','Cool','Yes']]
+random.shuffle(data)
+s = int(len(data) * 0.7)
+train, test = data[:s], data[s:]
+print(id3(train, [0, 1]))
