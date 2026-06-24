@@ -12,6 +12,8 @@ pred = vx @ theta
 mse = np.mean((vy - pred)**2)
 print("Predictions\n")
 for i in range(len(pred)):
-print("Actual :", vy[i]); print("Predicted:", round(pred[i],2)); print()
+    print("Actual :", vy[i])
+    print("Predicted:", round(pred[i],2))
+    print()
 print("MSE =", round(mse, 2))
 print("RMSE =", round(np.sqrt(mse), 2))
